@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
 import { generateOrderId } from '../helper/functions';
+import { Edit, Trash } from 'lucide-react';
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -37,14 +38,12 @@ const Dashboard = () => {
     if (form.order_id) {
       await supabase.from('orders').update(form).eq('order_id', form.order_id);
     } else {
-    await supabase
-      .from('orders')
-      .insert([
+      await supabase.from('orders').insert([
         {
-        ...form,
-        order_id: generateOrderId(),
-        region: form.region.toUpperCase(),
-        branch: form.branch.toUpperCase(),
+          ...form,
+          order_id: generateOrderId(),
+          region: form.region.toUpperCase(),
+          branch: form.branch.toUpperCase(),
         },
       ]);
     }
@@ -66,9 +65,9 @@ const Dashboard = () => {
   };
 
   return (
-    <div className='dashboard'>
-      <h1>Dashboard</h1>
-      <div className='filter'>
+    <div className='dashboard p-6'>
+      <h1 className='text-2xl font-bold mb-4'>Dashboard</h1>
+      <div className='filter flex gap-4 mb-4'>
         <input
           type='text'
           placeholder='Region'
@@ -76,6 +75,7 @@ const Dashboard = () => {
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, region: e.target.value }))
           }
+          className='border p-2 rounded w-1/3'
         />
         <input
           type='text'
@@ -84,24 +84,39 @@ const Dashboard = () => {
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, branch: e.target.value }))
           }
+          className='border p-2 rounded w-1/3'
         />
         <select
           defaultValue=''
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, status: e.target.value }))
-          }>
+          }
+          className='border p-2 rounded w-1/3'>
           <option value='' disabled>
             Select Status
           </option>
           <option value='Completed'>Completed</option>
           <option value='Cancelled'>Cancelled</option>
         </select>
-        <button onClick={() => fetchData()}>Filter</button>
+        <button
+          onClick={() => fetchData()}
+          className='bg-blue-500 text-white px-4 py-2 rounded'>
+          Filter
+        </button>
       </div>
-      <button onClick={() => setIsModalOpen(true)}>Add Order</button>
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className='bg-green-500 text-white px-4 py-2 rounded mb-4'>
+        Add Order
+      </button>
       {isModalOpen && (
-        <div className='modal'>
-          <form onSubmit={handleSubmit}>
+        <div
+          className='modal fixed inset-0 bg-gray-800/25 flex items-center justify-center'
+          onClick={() => setIsModalOpen(false)}>
+          <form
+            onClick={(e) => e.stopPropagation()}
+            onSubmit={handleSubmit}
+            className='bg-white p-6 rounded shadow-md w-1/3'>
             <input
               type='text'
               placeholder='Region'
@@ -109,6 +124,7 @@ const Dashboard = () => {
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, region: e.target.value }))
               }
+              className='border p-2 rounded w-full mb-4'
             />
             <input
               type='text'
@@ -117,47 +133,68 @@ const Dashboard = () => {
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, branch: e.target.value }))
               }
+              className='border p-2 rounded w-full mb-4'
             />
             <select
               defaultValue=''
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, status: e.target.value }))
-              }>
+              }
+              className='border p-2 rounded w-full mb-4'>
               <option value='' disabled>
                 Select Status
               </option>
               <option value='Completed'>Completed</option>
               <option value='Cancelled'>Cancelled</option>
             </select>
-            <button type='submit'>Save</button>
-            <button type='button' onClick={() => setIsModalOpen(false)}>
-              Cancel
-            </button>
+            <div className='flex justify-end gap-4'>
+              <button
+                type='submit'
+                className='bg-blue-500 text-white px-4 py-2 rounded'>
+                Save
+              </button>
+              <button
+                type='button'
+                onClick={() => setIsModalOpen(false)}
+                className='bg-gray-500 text-white px-4 py-2 rounded'>
+                Cancel
+              </button>
+            </div>
           </form>
         </div>
       )}
-      <table>
+      <table className='table-auto w-full border-collapse border border-gray-300'>
         <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Region</th>
-            <th>Branch</th>
-            <th>Status</th>
-            <th>Actions</th>
+          <tr className='bg-gray-100'>
+            <th className='border border-gray-300 px-4 py-2'>Order ID</th>
+            <th className='border border-gray-300 px-4 py-2'>Region</th>
+            <th className='border border-gray-300 px-4 py-2'>Branch</th>
+            <th className='border border-gray-300 px-4 py-2'>Status</th>
+            <th className='border border-gray-300 px-4 py-2'>Actions</th>
           </tr>
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.order_id}>
-              <td>{row.order_id}</td>
-              <td>{row.region}</td>
-              <td>{row.branch}</td>
-              <td>{row.status}</td>
-              <td>
-                <button onClick={() => openEdit(row)}>Edit</button>
-                <button onClick={() => handleDelete(row.order_id)}>
-                  Delete
-                </button>
+            <tr key={row.order_id} className='hover:bg-gray-100'>
+              <td className='border border-gray-300 px-4 py-2'>
+                {row.order_id}
+              </td>
+              <td className='border border-gray-300 px-4 py-2'>{row.region}</td>
+              <td className='border border-gray-300 px-4 py-2'>{row.branch}</td>
+              <td className='border border-gray-300 px-4 py-2'>{row.status}</td>
+              <td className='border border-gray-300 px-4 py-2'>
+                <div className='w-full flex gap-2 justify-center'>
+                  <button
+                    onClick={() => openEdit(row)}
+                    className='text-blue-500 hover:text-blue-700'>
+                    <Edit size={18} />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(row.order_id)}
+                    className='text-red-500 hover:text-red-700'>
+                    <Trash size={18} />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

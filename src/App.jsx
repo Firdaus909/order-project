@@ -7,6 +7,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import { AuthContext } from './AuthContext';
 
+import './App.css';
+
 const App = () => {
   const { isAuth } = useContext(AuthContext);
 
