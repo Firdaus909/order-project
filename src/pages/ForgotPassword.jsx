@@ -44,58 +44,56 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-2xl font-bold mb-6">Reset Password</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm"
-      >
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          className="w-full p-2 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <div className="relative">
+    <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
+      <div className='w-full max-w-md p-8 bg-white rounded-lg shadow-md'>
+        <h1 className='mb-6 text-2xl font-bold text-center text-gray-800'>
+          Reset Password
+        </h1>
+        <form onSubmit={handleSubmit} className='space-y-4'>
+          <input
+            type='text'
+            placeholder='Username'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+          />
+          <div className='relative'>
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Password"
+              placeholder='Password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
             />
             <button
-              type="button"
+              type='button'
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-3 flex items-center text-gray-500 focus:outline-none"
-            >
+              className='absolute inset-y-0 right-3 flex items-center text-gray-500 focus:outline-none'>
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-        <input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          className="w-full p-2 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200"
-        >
-          Reset Password
-        </button>
-      </form>
-      <Link
-        to="/login"
-        className="mt-4 text-blue-500 hover:underline"
-      >
-        Back to Login
-      </Link>
+          <input
+            type='password'
+            placeholder='Confirm new password'
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+          />
+          <button
+            type='submit'
+            className='w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-200'>
+            Reset Password
+          </button>
+        </form>
+      </div>
+        <div className='flex justify-center mt-4'>
+          <Link to='/login' className='text-blue-500 hover:underline'>
+            Back to Login
+          </Link>
+        </div>
     </div>
   );
 };
