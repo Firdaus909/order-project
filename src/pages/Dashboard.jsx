@@ -34,7 +34,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [filter]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -117,14 +117,6 @@ const Dashboard = () => {
           <option value='Completed'>Completed</option>
           <option value='Cancelled'>Cancelled</option>
         </select>
-        <button
-          onClick={() => {
-            fetchData();
-            setFilter({ region: '', branch: '', status: '' });
-          }}
-          className='bg-blue-500 text-white px-4 py-2 rounded'>
-          Filter
-        </button>
       </div>
       <button
         onClick={() => setIsModalOpen(true)}
