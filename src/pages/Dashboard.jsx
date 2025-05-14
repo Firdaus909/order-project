@@ -99,7 +99,10 @@ const Dashboard = () => {
           <option value='Cancelled'>Cancelled</option>
         </select>
         <button
-          onClick={() => fetchData()}
+          onClick={() => {
+            fetchData();
+            setFilter({ region: '', branch: '', status: '' });
+          }}
           className='bg-blue-500 text-white px-4 py-2 rounded'>
           Filter
         </button>
