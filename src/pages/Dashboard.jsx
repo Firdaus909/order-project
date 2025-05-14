@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
 import { generateOrderId } from '../helper/functions';
 import { Edit, Trash } from 'lucide-react';
+import { AuthContext } from '../AuthContext';
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -13,6 +14,8 @@ const Dashboard = () => {
     status: '',
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { logout } = useContext(AuthContext);
 
   const fetchData = async () => {
     let query = supabase.from('orders').select();
@@ -75,7 +78,14 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard p-6'>
-      <h1 className='text-2xl font-bold mb-4'>Dashboard</h1>
+      <div className='flex justify-between items-center mb-4'>
+        <h1 className='text-2xl font-bold'>Dashboard</h1>
+        <button
+          onClick={logout}
+          className='bg-red-500 text-white px-4 py-2 rounded'>
+          Logout
+        </button>
+      </div>
       <div className='filter flex gap-4 mb-4'>
         <input
           type='text'
