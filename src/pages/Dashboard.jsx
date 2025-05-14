@@ -36,7 +36,16 @@ const Dashboard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.order_id) {
-      await supabase.from('orders').update(form).eq('order_id', form.order_id);
+      await supabase
+        .from('orders')
+        .update([
+          {
+            ...form,
+            region: form.region.toUpperCase(),
+            branch: form.branch.toUpperCase(),
+          },
+        ])
+        .eq('order_id', form.order_id);
     } else {
       await supabase.from('orders').insert([
         {
@@ -139,7 +148,7 @@ const Dashboard = () => {
               className='border p-2 rounded w-full mb-4'
             />
             <select
-              defaultValue=''
+              defaultValue={form.status || ''}
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, status: e.target.value }))
               }
